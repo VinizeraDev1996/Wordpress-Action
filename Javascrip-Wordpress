@@ -107,7 +107,7 @@ function validateForm(e) {
 
 window.onload = function() {
     // Configura o campo de telefone, se existir
-    var phoneField = idcss('form-field-telefone');
+    var phoneField = idcss('form-field-telefone'); - Trocar pelo id do campo de telefone do formulário.
     if (phoneField) {
         phoneField.setAttribute('maxlength', 15);
         phoneField.onkeypress = function() {
@@ -116,7 +116,7 @@ window.onload = function() {
     }
     
     // Configura o campo de CPF, se existir
-    var cpfField = idcss('form-field-cpf');
+    var cpfField = idcss('form-field-cpf'); - Trocar pelo id do campo de CPF do formulário.
     if (cpfField) {
         cpfField.setAttribute('maxlength', 14); // Formato: 000.000.000-00
         cpfField.onkeypress = function() {
@@ -125,7 +125,7 @@ window.onload = function() {
     }
     
     // Configura o campo de CNPJ, se existir
-    var cnpjField = idcss('form-field-cnpj');
+    var cnpjField = idcss('form-field-cnpj'); - Trocar pelo id do campo de CNPJ
     if (cnpjField) {
         cnpjField.setAttribute('maxlength', 18); // Formato: 00.000.000/0000-00
         cnpjField.onkeypress = function() {
@@ -134,7 +134,7 @@ window.onload = function() {
     }
     
     // Adiciona a validação a todos os formulários da página
-    var forms = document.querySelectorAll("form");
+    var forms = document.querySelectorAll("form"); - Trocar pelo id do formulário ou criar um ID CSS em avançado.
     forms.forEach(function(form) {
         form.addEventListener("submit", validateForm, true);
     });
