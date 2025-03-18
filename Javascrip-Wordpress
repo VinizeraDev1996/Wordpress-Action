@@ -1,0 +1,142 @@
+<script type="text/javascript">
+function mask(o, f) {
+    v_obj = o;
+    v_fun = f;
+    setTimeout("execmask()", 1);
+}
+
+function execmask() {
+    v_obj.value = v_fun(v_obj.value);
+}
+
+function masktel(v) {
+    v = v.replace(/\D/g, "");
+    v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+    v = v.replace(/(\d)(\d{4})$/, "$1-$2");
+    return v;
+}
+
+function maskcpf(v) {
+    v = v.replace(/\D/g, "");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+    return v;
+}
+
+function maskcnpj(v) {
+    v = v.replace(/\D/g, "");
+    v = v.replace(/(\d{2})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1.$2");
+    v = v.replace(/(\d{3})(\d)/, "$1/$2");
+    v = v.replace(/(\d{4})(\d)/, "$1-$2");
+    return v;
+}
+
+function idcss(el) {
+    return document.getElementById(el);
+}
+
+function validateForm(e) {
+    // Validação do Telefone (se existir)
+    var telField = idcss('form-field-telefone');
+    if (telField) {
+        var tel = telField.value;
+        var telDigits = tel.replace(/\D/g, '');
+        if (telDigits.length < 10) {
+            alert("Por favor, preencha o campo 'Telefone' com todos os dígitos.");
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+        }
+        var telPattern = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+        if (!telPattern.test(tel)) {
+            alert("Por favor, preencha o campo 'Telefone' corretamente.");
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            return false;
+        }
+    }
+    
+    // Validação do CPF (se existir)
+    var cpfField = idcss('form-field-cpf');
+    if (cpfField) {
+        var cpf = cpfField.value;
+        if(cpf !== "") {
+            var cpfDigits = cpf.replace(/\D/g, '');
+            if (cpfDigits.length !== 11) {
+                alert("Por favor, preencha o campo 'CPF' corretamente com 11 dígitos.");
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                return false;
+            }
+            var cpfPattern = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+            if (!cpfPattern.test(cpf)) {
+                alert("Por favor, preencha o campo 'CPF' com o formato correto: 000.000.000-00");
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                return false;
+            }
+        }
+    }
+    
+    // Validação do CNPJ (se existir)
+    var cnpjField = idcss('form-field-cnpj');
+    if (cnpjField) {
+        var cnpj = cnpjField.value;
+        if(cnpj !== "") {
+            var cnpjDigits = cnpj.replace(/\D/g, '');
+            if (cnpjDigits.length !== 14) {
+                alert("Por favor, preencha o campo 'CNPJ' corretamente com 14 dígitos.");
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                return false;
+            }
+            var cnpjPattern = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+            if (!cnpjPattern.test(cnpj)) {
+                alert("Por favor, preencha o campo 'CNPJ' com o formato correto: 00.000.000/0000-00");
+                e.preventDefault();
+                e.stopImmediatePropagation();
+                return false;
+            }
+        }
+    }
+    
+    return true;
+}
+
+window.onload = function() {
+    // Configura o campo de telefone, se existir
+    var phoneField = idcss('form-field-telefone');
+    if (phoneField) {
+        phoneField.setAttribute('maxlength', 15);
+        phoneField.onkeypress = function() {
+            mask(this, masktel);
+        }
+    }
+    
+    // Configura o campo de CPF, se existir
+    var cpfField = idcss('form-field-cpf');
+    if (cpfField) {
+        cpfField.setAttribute('maxlength', 14); // Formato: 000.000.000-00
+        cpfField.onkeypress = function() {
+            mask(this, maskcpf);
+        }
+    }
+    
+    // Configura o campo de CNPJ, se existir
+    var cnpjField = idcss('form-field-cnpj');
+    if (cnpjField) {
+        cnpjField.setAttribute('maxlength', 18); // Formato: 00.000.000/0000-00
+        cnpjField.onkeypress = function() {
+            mask(this, maskcnpj);
+        }
+    }
+    
+    // Adiciona a validação a todos os formulários da página
+    var forms = document.querySelectorAll("form");
+    forms.forEach(function(form) {
+        form.addEventListener("submit", validateForm, true);
+    });
+}
+</script>
